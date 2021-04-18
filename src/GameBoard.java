@@ -24,7 +24,7 @@ public class GameBoard{
     private final int LIGHT_COLOR;
 
     // Game board
-
+    private ChessSquare[][] board = new ChessSquare[8][8];
 
     /**
      * Sets up the GUI environment for the Processing program
@@ -38,18 +38,43 @@ public class GameBoard{
 
         DARK_COLOR = sketch.color(184,139,74);
         LIGHT_COLOR = sketch.color(227,193,111);
+        generateBoard();
     }
 
+    public ChessSquare[][] getBoard(){
+        return board;
+    }
+
+    public void changeBoard(int origin_rank, int origin_file, int destination_rank, int destination_file) throws Exception {
+        if (!board[destination_rank][destination_file].isOccupied()){
+            throw new Exception("You Fucked Up!");
+        }
+
+        board[destination_rank][destination_file].setOccupier(board[origin_rank][origin_file].getOccupier());
+        board[origin_rank][origin_file].setOccupier(null);
+
+    }
 
     /**
      * Calculate the positions for board squares.
      *
-     * <p>Iterate over positions for board squares and then call {@link #drawBoardRect(int, int)} to draw the rectangle. </p>
+     * <p>
+     * Iterate over positions for board squares and then call {@link #drawBoardRect(int, int)} to draw the rectangle.
+     * Add ChessSquare at defined position
+     * </p>
      */
     public void drawBoard(){
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++){
                 drawBoardRect(i, j);
+            }
+        }
+    }
+
+    private void generateBoard(){
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                board[i][j] = new ChessSquare(i, j);
             }
         }
     }
@@ -96,13 +121,20 @@ public class GameBoard{
         float textLocationX = (float)(xSize/20);
         float textLocationY = (float)1.2 * textHeight;
 
-
         // Draw chess text representation of current square
-        sketch.fill(255);
         sketch.textSize(textHeight);
+        sketch.fill(255);
+        sketch.textAlign(sketch.LEFT);
         sketch.text(FILE.get(currentFile) + "" + RANK.get(currentRank),
                 currentFile * xSize + textLocationX,
                 currentRank * ySize + textLocationY);
+
+        // Draw computer rank and file numbers
+        sketch.fill(200, 0, 0);
+        sketch.textAlign(sketch.RIGHT);
+        sketch.text("F:" + currentFile + " R:" + currentRank,
+                currentFile * xSize + xSize - textLocationX,
+                currentRank * ySize + ySize - (float)0.5 * textLocationY);
 
     }
 
@@ -130,5 +162,4 @@ public class GameBoard{
             RANK.put(i, 8 - i);
         }
     }
-
 }
