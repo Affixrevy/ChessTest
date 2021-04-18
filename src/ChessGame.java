@@ -27,6 +27,7 @@ public class ChessGame extends PApplet {
     public static GameBoard gameBoard;
 
     private boolean boardDrawn = false;
+    private ChessPiece selected = null;
 
     public void settings(){
         // Set the size of the Processing window
@@ -46,17 +47,27 @@ public class ChessGame extends PApplet {
         int rank = Math.floorDiv(mouseY, Math.floorDiv(height, 8));
         int file = Math.floorDiv(mouseX, Math.floorDiv(width, 8));
 
-        if (gameBoard.getBoard()[rank][file].isOccupied()){
-            ArrayList<ChessSquare> possibleMoves = gameBoard.getBoard()[rank][file].getOccupier().getValidMoves();
 
-//            for(ChessSquare m: possibleMoves) {
-//                System.out.print("f: " + m.getFile() + " r: " + m.getRank());
-//                if (m.getOccupier() != null) {
-//                    System.out.print(" is a: " + m.getOccupier().name);
-//                }
-//                System.out.println();
-//            }
+
+        if (selected != null) {
+            if (selected.isValidMove(file, rank)) {
+                if (selected.movePiece(file, rank))
+                    selected = null;
+            }
+        } else if (gameBoard.getBoard()[rank][file].isOccupied() && selected == null){
+            selected = gameBoard.getBoard()[rank][file].getOccupier();
+            ArrayList<ChessSquare> possibleMoves = selected.getValidMoves();
+
+            for(ChessSquare m: possibleMoves) {
+                System.out.print("f: " + m.getFile() + " r: " + m.getRank());
+                if (m.getOccupier() != null) {
+                    System.out.print(" is a: " + m.getOccupier().name);
+                }
+                System.out.println();
+            }
         }
+
+        System.out.println("Selected is: " + selected);
 
         gameBoard.drawBoard();
     }

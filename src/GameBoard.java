@@ -46,7 +46,7 @@ public class GameBoard{
     }
 
     public void changeBoard(int origin_rank, int origin_file, int destination_rank, int destination_file) throws Exception {
-        if (!board[destination_rank][destination_file].isOccupied()){
+        if (board[destination_rank][destination_file].isOccupied()){
             throw new Exception("You Fucked Up!");
         }
 

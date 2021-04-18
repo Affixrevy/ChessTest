@@ -28,6 +28,17 @@ public abstract class ChessPiece {
         this.alive = true;
     }
 
+    @Override
+    public String toString() {
+        return "ChessPiece{" +
+                "name='" + name + '\'' +
+                ", currentFile=" + currentFile +
+                ", currentRank=" + currentRank +
+                ", player=" + player +
+                ", alive=" + alive +
+                '}';
+    }
+
     void capture() {
         this.alive = !this.alive;
     }
