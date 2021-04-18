@@ -24,7 +24,9 @@ import java.util.Map;
  */
 public class ChessGame extends PApplet {
 
-    GameBoard gameBoard;
+    public static GameBoard gameBoard;
+
+    private boolean boardDrawn = false;
 
     public void settings(){
         // Set the size of the Processing window
@@ -34,6 +36,28 @@ public class ChessGame extends PApplet {
     }
 
     public void draw(){
+        if (!boardDrawn){
+            gameBoard.drawBoard();
+            boardDrawn = !boardDrawn;
+        }
+    }
+
+    public void mousePressed(){
+        int rank = Math.floorDiv(mouseY, Math.floorDiv(height, 8));
+        int file = Math.floorDiv(mouseX, Math.floorDiv(width, 8));
+
+        if (gameBoard.getBoard()[rank][file].isOccupied()){
+            ArrayList<ChessSquare> possibleMoves = gameBoard.getBoard()[rank][file].getOccupier().getValidMoves();
+
+//            for(ChessSquare m: possibleMoves) {
+//                System.out.print("f: " + m.getFile() + " r: " + m.getRank());
+//                if (m.getOccupier() != null) {
+//                    System.out.print(" is a: " + m.getOccupier().name);
+//                }
+//                System.out.println();
+//            }
+        }
+
         gameBoard.drawBoard();
     }
 

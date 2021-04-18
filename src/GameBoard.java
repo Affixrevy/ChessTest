@@ -67,8 +67,16 @@ public class GameBoard{
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++){
                 drawBoardRect(i, j);
+
             }
         }
+
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                drawBoardPieces(i, j);
+            }
+        }
+
     }
 
     private void generateBoard(){
@@ -77,6 +85,30 @@ public class GameBoard{
                 board[i][j] = new ChessSquare(i, j);
             }
         }
+
+        board[0][0].setOccupier(new Pawn(sketch, "Pawn", 0, 0, 0));
+    }
+
+    private void drawBoardPieces(int currentFile, int currentRank){
+        ChessSquare currentSquare = board[currentRank][currentFile];
+        if (!currentSquare.isOccupied()){
+            return;
+        }
+        // Set square width and height constants
+        final int xSize = sketch.width/8;
+        final int ySize = sketch.height/8;
+        final int diameter = xSize/2;
+
+        if (currentSquare.getOccupier().player == 0){
+            sketch.fill(0);
+        } else {
+            sketch.fill(255);
+        }
+
+        sketch.ellipse(currentFile * xSize + (float)(xSize/2),
+                       currentRank * ySize + (float)(ySize/2),
+                          diameter,
+                          diameter);
     }
 
     /**

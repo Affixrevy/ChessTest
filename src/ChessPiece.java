@@ -36,6 +36,5 @@ public abstract class ChessPiece {
     abstract boolean isValidMove(int file, int rank) throws UnsupportedOperationException;
     abstract boolean movePiece(int file, int rank) throws UnsupportedOperationException;
 
-    abstract void drawPiece() throws UnsupportedOperationException;
 
 }
